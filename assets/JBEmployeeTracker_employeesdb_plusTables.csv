@@ -1,0 +1,37 @@
+Database:,employeesdb,,,,,
+,,,,,,
+,,,,,,
+Table:,employee,,,,(also role_id),
+employee-id,first_name,last_name,role_id,role-title,manager_id,manager-name
+1,Peter,Pumpkin,1,Sales Manager,3,Tommy Tomato
+2,Petronella,Potato,2,Lead Engineer,1,Peter Pumpkin
+3,Tommy,Tomato,3,Software Engineer,NULL,
+4,Angelina,Apple,4,Accountant,3,Tommy Tomato
+5,Benjamin,Banana,5,Operations Manager,NULL,
+7,Troy,TheFallenCity,5,Operations Manager,7,CEO
+8,Christian,Jerusalem,1,Sales Manager,2,Petronella Potato
+9,Muledeer,Moleskin,3,Software Engineer,NULL,
+10,Android,IPhone,7,CEO,NULL,
+11,Molly,TheChicken,5,Operations Manager,NULL,
+,,,,,,
+,,,,,,
+Table:,department,,,,,
+department_id,name,,,,,
+1,Sales,,,,,
+2,Engineering,,,,,
+3,Finance,,,,,
+4,Operations,,,,,
+5,Executive,,,,,
+6,Marketing,,,,,
+,,,,,,
+,,,,,,
+Table:,role,,,,,
+role_id,title,salary,department_id,,,
+1,Sales Manager,150000,1,,,
+2,Lead Engineer,150000,2,,,
+3,Software Engineer,120000,2,,,
+4,Accountant,125000,3,,,
+5,Operations Manager,185000,4,,,
+6,COO,250000,4,,,
+7,CEO,300000,5,,,
+8,Marketing Manager,135000,1,,,

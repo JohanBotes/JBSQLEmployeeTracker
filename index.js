@@ -26,7 +26,7 @@ function firstPrompt() {
       message: "What would you like to do?",
       choices: [
         "1. View all Departments",
-        "2. View all Roles",
+        "2. View all Jobs/Roles",
         "3. View all Employees",
         "4. View Employees by Department",
         // "View Employees by Manager",
@@ -44,7 +44,7 @@ function firstPrompt() {
         case "1. View all Departments":
           viewDepartments();
           break;
-        case "2. View all Roles":
+        case "2. View all Jobs/Roles":
           viewRoles();
           break;
         case "3. View all Employees":
@@ -92,7 +92,8 @@ function viewDepartments() {
   console.log("Viewing all Departments\n");
 
   let query =
-    `SELECT * FROM department ORDER BY id ASC;`
+    `SELECT department.id as "Dept ID", department.name as "Department Name"  FROM department 
+    ORDER by department.id;`
 
     connection.query(query, function (err, res) {
       if (err) throw err;
@@ -110,10 +111,11 @@ function viewRoles() {
   console.log("Viewing all Roles\n");
 
   let query =
-  `SELECT role.id, role.title, role.salary, role.department_id FROM role
+  `SELECT role.id as "Rle ID", role.title as "Job/Role Title", name as "Department Name", role.salary as "Annual Salary CTC" FROM role
   INNER JOIN department
   ON role.department_id = department.id
   ORDER by role.id ASC;`
+
   connection.query(query, function (err, res) {
       if (err) throw err;
   
@@ -130,10 +132,11 @@ function viewEmployee() {
   console.log("Viewing all employees\n");
 
   let query =
-    `SELECT * FROM employee 
+    `SELECT employee.id, first_name as "First Name", last_name as "Last name", manager_id as "Employee Manager ID", title as "Job/Role Title", name as "Department Name", salary as "Annual Salary CTC" FROM employee 
     INNER JOIN role on employee.role_id = role.id 
     RIGHT JOIN department on department.id = role.department_id
-    GROUP BY employee.id, employee.first_name, employee.last_name ORDER by employee.id;`
+    GROUP BY employee.id, employee.first_name, employee.last_name 
+    ORDER by employee.id;`
 
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -154,13 +157,11 @@ function viewEmployeeByDepartment() {
   console.log("Viewing employees by department\n");
 
   let query =
-    `SELECT d.id, d.name, r.salary AS budget
-  FROM employee e
-  LEFT JOIN role r
-	ON e.role_id = r.id
-  LEFT JOIN department d
-  ON d.id = r.department_id
-  GROUP BY d.id, d.name;`
+    `SELECT employee.id, first_name as "First Name", last_name as "Last name", manager_id as "Employee Manager ID", title as "Job/Role Title", department_id as "Department ID", name as "Department Name", salary as "Annual Salary CTC" FROM employee 
+    INNER JOIN role on employee.role_id = role.id 
+    RIGHT JOIN department on department.id = role.department_id
+    GROUP BY employee.id, employee.first_name, employee.last_name 
+    ORDER by employee.id;`
 
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -411,7 +412,7 @@ function employeeArray() {
   console.log("Updating an employee");
 
   var query =
-    `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
+  `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
   FROM employee e
   JOIN role r
 	ON e.role_id = r.id
@@ -419,8 +420,8 @@ function employeeArray() {
   ON d.id = r.department_id
   JOIN employee m
 	ON m.id = e.manager_id`
-
-  connection.query(query, function (err, res) {
+    
+    connection.query(query, function (err, res) {
     if (err) throw err;
 
     const employeeChoices = res.map(({ id, first_name, last_name }) => ({
@@ -428,7 +429,7 @@ function employeeArray() {
     }));
 
     console.table(res);
-    console.log("employeeArray To Update!\n")
+    console.log("Employees To Update!\n")
 
     roleArray(employeeChoices);
   });

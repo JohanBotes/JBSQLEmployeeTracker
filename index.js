@@ -112,8 +112,8 @@ function viewRoles() {
   let query =
     `SELECT * FROM role
     INNER JOIN department
-    on role.department_id = department.id
-    ORDER BY role.id;`
+    ON role.department_id = department.id
+    ORDER by role.id ASC;`
 
     connection.query(query, function (err, res) {
       if (err) throw err;

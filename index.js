@@ -110,12 +110,11 @@ function viewRoles() {
   console.log("Viewing all Roles\n");
 
   let query =
-    `SELECT * FROM role
-    INNER JOIN department
-    ON role.department_id = department.id
-    ORDER by role.id ASC;`
-
-    connection.query(query, function (err, res) {
+  `SELECT role.id, role.title, role.salary, role.department_id FROM role
+  INNER JOIN department
+  ON role.department_id = department.id
+  ORDER by role.id ASC;`
+  connection.query(query, function (err, res) {
       if (err) throw err;
   
       console.table(res);
@@ -161,7 +160,7 @@ function viewEmployeeByDepartment() {
 	ON e.role_id = r.id
   LEFT JOIN department d
   ON d.id = r.department_id
-  GROUP BY d.id, d.name`
+  GROUP BY d.id, d.name;`
 
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -592,18 +591,18 @@ function promptAddRole(departmentChoices) {
     .prompt([
       {
         type: "input",
-        name: "roleTitle",
+        name: "title",
         message: "Role title?"
       },
       {
         type: "input",
-        name: "roleSalary",
+        name: "salary",
         message: "Role Salary"
       },
       {
         type: "list",
-        name: "departmentId",
-        message: "Department?",
+        name: "department_id",
+        message: "Select the Department?",
         choices: departmentChoices
       },
     ])
@@ -614,7 +613,7 @@ function promptAddRole(departmentChoices) {
       connection.query(query, {
         title: answer.title,
         salary: answer.salary,
-        department_id: answer.departmentId
+        department_id: answer.department_id
       },
         function (err, res) {
           if (err) throw err;
